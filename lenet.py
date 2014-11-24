@@ -24,6 +24,7 @@ References:
 import os
 import sys
 import time
+import gzip
 
 import numpy
 
@@ -110,7 +111,7 @@ class LeNetConvPoolLayer(object):
         # store parameters of this layer
         self.params = [self.W, self.b]
 
-
+#TODO: make different version of this with desired combination
 def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
                     dataset='mnist.pkl',
                     nkerns=[20, 50], batch_size=500):

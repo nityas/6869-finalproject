@@ -1,6 +1,8 @@
 import os
 import sys
 import time
+import gzip
+
 
 class LogisticRegression(object):
     """Multi-class Logistic Regression Class
