@@ -148,7 +148,7 @@ def load_data(dataset):
     if (not os.path.isfile(dataset)) and data_file == 'mnist.pkl.gz':
         import urllib
         origin = (
-            'http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz'
+            'http://deeplearning.net/data/mnist/mnist.pkl.gz'
         )
         print 'Downloading data from %s' % origin
         urllib.urlretrieve(origin, dataset)
