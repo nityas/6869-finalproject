@@ -2,7 +2,10 @@ import os
 import sys
 import time
 import gzip
-
+import cPickle
+import theano
+import numpy
+import theano.tensor as T
 
 class LogisticRegression(object):
     """Multi-class Logistic Regression Class
