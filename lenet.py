@@ -288,9 +288,6 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
 
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
-            # if iter % 100 == 0:
-            #     print 'training @ iter = ', iter
-            # cost_ij = train_model(minibatch_index)
             test_losses = [
                         test_model(i)
                         for i in xrange(n_test_batches)
@@ -301,7 +298,8 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
             if (iter + 1) % validation_frequency == 0:
 
                 # compute zero-one loss on validation set
-                print 'computing zero-one validationj'
+                print 'computing zero-one validation'
+
                 validation_losses = [validate_model(i) for i
                                      in xrange(n_valid_batches)]
                 this_validation_loss = numpy.mean(validation_losses)
