@@ -276,29 +276,34 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
     best_iter = 0
     test_score = 0.
     start_time = time.clock()
+    maxiter = 1000
 
     epoch = 0
     done_looping = False
 
     while (epoch < n_epochs) and (not done_looping):
         epoch = epoch + 1
+        print "epoch ", epoch
         for minibatch_index in xrange(n_train_batches):
 
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
-            if iter % 100 == 0:
-                print 'training @ iter = ', iter
-            cost_ij = train_model(minibatch_index)
+            test_losses = [
+                        test_model(i)
+                        for i in xrange(n_test_batches)
+                    ]
+            test_score = float(numpy.mean(test_losses))
+            print 'iter ', iter,': accuracy= ', test_score
 
             if (iter + 1) % validation_frequency == 0:
 
                 # compute zero-one loss on validation set
+                print 'computing zero-one validation'
+
                 validation_losses = [validate_model(i) for i
                                      in xrange(n_valid_batches)]
                 this_validation_loss = numpy.mean(validation_losses)
-                print('epoch %i, minibatch %i/%i, validation error %f %%' %
-                      (epoch, minibatch_index + 1, n_train_batches,
-                       this_validation_loss * 100.))
+                print 'validation loss= ', this_validation_loss
 
                 # if we got the best validation score until now
                 if this_validation_loss < best_validation_loss:
@@ -312,18 +317,7 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
                     best_validation_loss = this_validation_loss
                     best_iter = iter
 
-                    # test it on the test set
-                    test_losses = [
-                        test_model(i)
-                        for i in xrange(n_test_batches)
-                    ]
-                    test_score = numpy.mean(test_losses)
-                    print(('     epoch %i, minibatch %i/%i, test error of '
-                           'best model %f %%') %
-                          (epoch, minibatch_index + 1, n_train_batches,
-                           test_score * 100.))
-
-            if patience <= iter:
+            if (patience <= iter) or (iter >= maxiter):
                 done_looping = True
                 break
 
