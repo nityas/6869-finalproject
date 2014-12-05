@@ -33,8 +33,9 @@ import theano.tensor as T
 from theano.tensor.signal import downsample
 from theano.tensor.nnet import conv
 
-from LogisticRegression import *
-from HiddenLayer import *
+import lenet
+from lenet.LogisticRegression import *
+from lenet.HiddenLayer import *
 
 
 class LeNetConvPoolLayer(object):
@@ -113,7 +114,7 @@ class LeNetConvPoolLayer(object):
 
 #TODO: make different version of this with desired combination
 def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
-                    dataset='mnist.pkl',
+                    dataset='res/mnist.pkl',
                     nkerns=[20, 50], batch_size=500):
     """ Demonstrates lenet on MNIST dataset
 
