@@ -21,6 +21,10 @@ References:
    http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf
 
 """
+
+"""
+Usage: python run_lenet.py (training and testing)
+"""
 import os
 import sys
 import time
@@ -123,14 +127,11 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
 
 
 def build_lenet(learning_rate=0.1, dataset='res/mnist.pkl', nkerns=[20, 50], batch_size=500):
-    """ Demonstrates lenet on MNIST dataset
+    """ Constructs lenet on MNIST dataset
 
     :type learning_rate: float
     :param learning_rate: learning rate used (factor for the stochastic
                           gradient)
-
-    :type n_epochs: int
-    :param n_epochs: maximal number of epochs to run the optimizer
 
     :type dataset: string
     :param dataset: path to the dataset used for training /testing (MNIST here)
@@ -265,6 +266,11 @@ def build_lenet(learning_rate=0.1, dataset='res/mnist.pkl', nkerns=[20, 50], bat
     # end-snippet-1
 
 def train_cnn(n_epochs=200):
+    """ Trains net previously constructed on MNIST data
+
+    :type n_epochs: int
+    :param n_epochs: maximal number of epochs to run the optimizer
+    """
     ##############
     # TRAIN MODEL #
     ###############
