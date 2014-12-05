@@ -113,16 +113,9 @@ class LeNetConvPoolLayer(object):
         self.params = [self.W, self.b]
 
 #TODO: make different version of this with desired combination
-
 def evaluate_lenet(learning_rate=0.1, n_epochs=200,
                     dataset='res/mnist.pkl',
                     nkerns=[20, 50], batch_size=500):
-
-    build_lenet(learning_rate=learning_rate,dataset=dataset,nkerns=nkerns, batch_size=batch_size)
-    train_lenet(n_epochs=n_epochs)
-
-
-def build_lenet(learning_rate=0.1, dataset='res/mnist.pkl', nkerns=[20, 50], batch_size=500):
     """ Demonstrates lenet on MNIST dataset
 
     :type learning_rate: float
@@ -264,8 +257,7 @@ def build_lenet(learning_rate=0.1, dataset='res/mnist.pkl', nkerns=[20, 50], bat
     )
     # end-snippet-1
 
-def train_cnn(n_epochs=200):
-    ##############
+    ###############
     # TRAIN MODEL #
     ###############
     print '... training'
