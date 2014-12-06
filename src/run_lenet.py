@@ -21,6 +21,10 @@ References:
    http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf
 
 """
+
+"""
+Usage: python run_lenet.py (training and testing)
+"""
 import os
 import sys
 import time
@@ -33,8 +37,9 @@ import theano.tensor as T
 from theano.tensor.signal import downsample
 from theano.tensor.nnet import conv
 
-from LogisticRegression import *
-from HiddenLayer import *
+import lenet
+from lenet.LogisticRegression import *
+from lenet.HiddenLayer import *
 
 
 class LeNetConvPoolLayer(object):
@@ -112,17 +117,21 @@ class LeNetConvPoolLayer(object):
         self.params = [self.W, self.b]
 
 #TODO: make different version of this with desired combination
-def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
-                    dataset='mnist.pkl',
+
+def evaluate_lenet(learning_rate=0.1, n_epochs=200,
+                    dataset='res/mnist.pkl',
                     nkerns=[20, 50], batch_size=500):
-    """ Demonstrates lenet on MNIST dataset
+
+    build_lenet(learning_rate=learning_rate,dataset=dataset,nkerns=nkerns, batch_size=batch_size)
+    train_lenet(n_epochs=n_epochs)
+
+
+def build_lenet(learning_rate=0.1, dataset='res/mnist.pkl', nkerns=[20, 50], batch_size=500):
+    """ Constructs lenet on MNIST dataset
 
     :type learning_rate: float
     :param learning_rate: learning rate used (factor for the stochastic
                           gradient)
-
-    :type n_epochs: int
-    :param n_epochs: maximal number of epochs to run the optimizer
 
     :type dataset: string
     :param dataset: path to the dataset used for training /testing (MNIST here)
@@ -256,7 +265,13 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
     )
     # end-snippet-1
 
-    ###############
+def train_cnn(n_epochs=200):
+    """ Trains net previously constructed on MNIST data
+
+    :type n_epochs: int
+    :param n_epochs: maximal number of epochs to run the optimizer
+    """
+    ##############
     # TRAIN MODEL #
     ###############
     print '... training'
@@ -331,8 +346,8 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=200,
                           ' ran for %.2fm' % ((end_time - start_time) / 60.))
 
 if __name__ == '__main__':
-    evaluate_lenet5()
+    evaluate_lenet()
 
 
 def experiment(state, channel):
-    evaluate_lenet5(state.learning_rate, dataset=state.dataset)
+    evaluate_lenet(state.learning_rate, dataset=state.dataset)
