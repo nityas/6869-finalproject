@@ -7,7 +7,7 @@ from PIL import Image
 import cPickle
 import gzip
 
-root = 'English/Img/'
+root = '../English/Img/'
 bad = 'BadImag/Bmp/'
 good = 'GoodImg/Bmp/'
 
@@ -67,7 +67,7 @@ testing_data = numpy.asarray(testing_data)
 testing_labels = numpy.asarray(testing_labels)
 
 final_data_set = ((training_data, training_labels), (validation_data, validation_labels), (testing_data, testing_labels))
-print final_data_set[0][0][0][len(final_data_set[0][0][0]) - 1]
+
 #cPickle.dump(final_data_set, 'single_char_data.pkl')
 
 # don't forget to zip!
