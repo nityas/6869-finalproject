@@ -27,6 +27,7 @@ import time
 import gzip
 
 import numpy
+import itertools
 
 import theano
 import theano.tensor as T
@@ -221,6 +222,15 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
         }
     )
 
+    get_errors = theano.function(
+        [index],
+        layer3.errors(y,frac=True),
+        givens={
+            x: test_set_x[index * batch_size: (index + 1) * batch_size],
+            y: test_set_y[index * batch_size: (index + 1) * batch_size]
+        }
+    )
+
     validate_model = theano.function(
         [index],
         layer3.errors(y),
@@ -289,12 +299,17 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
 
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
-            test_losses = [
-                        test_model(i)
+            test_score = [
+                        get_errors(i)
                         for i in xrange(n_test_batches)
                     ]
-            test_score = float(numpy.mean(test_losses))
-            print 'iter ', iter,': accuracy= ', test_score
+            pred = test_score[0][0]
+            actual = test_score[-1][1]
+
+            n = len(numpy.unique(actual))
+            print numpy.array([zip(actual,pred).count(x) for x in itertools.product(list(set(actual)),repeat=2)]).reshape(n,n)
+            #test_score = float(numpy.mean(test_losses))
+            #print 'iter ', iter,': accuracy= ', test_score[0]
 
             if (iter + 1) % validation_frequency == 0:
 

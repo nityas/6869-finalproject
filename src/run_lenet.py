@@ -123,7 +123,7 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
                     nkerns=[20, 50], batch_size=500):
 
     build_lenet(learning_rate=learning_rate,dataset=dataset,nkerns=nkerns, batch_size=batch_size)
-    train_lenet(n_epochs=n_epochs)
+    train_cnn(n_epochs=n_epochs)
 
 
 def build_lenet(learning_rate=0.1, dataset='res/mnist.pkl', nkerns=[20, 50], batch_size=500):
@@ -307,6 +307,7 @@ def train_cnn(n_epochs=200):
                         test_model(i)
                         for i in xrange(n_test_batches)
                     ]
+            print "test_model out", test_losses
             test_score = float(numpy.mean(test_losses))
             print 'iter ', iter,': accuracy= ', test_score
 
