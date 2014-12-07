@@ -1,18 +1,10 @@
 from sklearn import preprocessing, linear_model
 import numpy
 
-HOG_TRAINING_DATA = 'data/hog_training_data'
-HOG_TRAINING_LABELS = 'data/hog_training_labels'
-HOG_TESTING_DATA = 'data/hog_testing_data'
-HOG_TESTING_LABELS = 'data/hog_testing_labels'
-
-# HOG_TRAINING_DATA = 'data/hog_training_data.csv'
-# HOG_TRAINING_LABELS = 'data/hog_training_labels.csv'
-# HOG_TESTING_DATA = 'data/hog_testing_data.csv'
-# HOG_TESTING_LABELS = 'data/hog_testing_labels.csv'
-
-NUM_FEATURES = 1500
-NUM_TRAINING = 50000 #100000 for first data set
+HOG_TRAINING_DATA = 'data/hog_training_data.npy'
+HOG_TRAINING_LABELS = 'data/hog_training_labels.npy'
+HOG_TESTING_DATA = 'data/hog_testing_data.npy'
+HOG_TESTING_LABELS = 'data/hog_testing_labels.npy'
 
 def get_training_set():
   
@@ -52,7 +44,11 @@ def get_testing_set():
 def train():
   print "beginning training"
   #labels, features = get_training_set()
-  labels = numpy.load()
+  labels = numpy.load(HOG_TRAINING_LABELS)
+  features = numpy.load(HOG_TRAINING_DATA)
+  features.tolist()
+
+  print labels
   scaler = preprocessing.StandardScaler().fit(features)
   features = scaler.transform(features)
   features = preprocessing.normalize(features)
@@ -68,7 +64,11 @@ def train():
 def test():
   print "beginning testing"
 
-  model, scaler = train(data_file)
+  model, scaler = train()
+
+  labels = numpy.load(HOG_TESTING_LABELS)
+  features = numpy.load(HOG_TESTING_DATA)
+
   num_correct = 0
   num_wrong = 0
   for i in range(0, len(features)):
@@ -78,11 +78,27 @@ def test():
     data = scaler.transform(data)
     data = preprocessing.normalize(data)
     prediction = model.predict(data)
-    print str(prediction[0]) + " " + str(labels[i])
-    if prediction[0] == labels[i]:
+    print "Predicted " + convert(int(prediction[0])) + " and actually " + convert(int(labels[i]))
+    if prediction[0] == labels[i] or inverse(prediction[0]) == labels[i]:
       num_correct = num_correct + 1
     else:
       num_wrong = num_wrong + 1
   print (float(num_correct) / (num_correct + num_wrong))
+
+def convert(i):
+  if i >= 1 and i <= 10:
+    return str(i - 1)
+  if i >= 11 and i <= 36:
+    return chr(i + 54)
+  if i >= 37:
+    return chr(i + 60) 
+
+def inverse(i):
+  if i >= 1 and i <= 10:
+    return i
+  if i >= 11 and i <= 36:
+    return i + 26
+  if i >= 37:
+    return i - 26
 
 test()
