@@ -3,10 +3,11 @@
 import numpy
 import sys
 import os
-from PIL import Image
+from PIL import Image, ImageChops
 import cPickle
 import gzip
 from skimage.feature import hog
+import math
 
 root = '../English/Img/'
 bad = 'BadImag/Bmp/'
@@ -30,8 +31,10 @@ training_labels = []
 testing_data = []
 testing_labels = []
 
+NUM_CELLS = 144
+
 # Range endpoint should be 63, but leaving it as 2 for testing purposes.
-for i in range (1, 2):
+for i in range (1, 63):
 	print "Checking " + str(i)
 	num = ''
 	if i < 10:
@@ -52,14 +55,39 @@ for i in range (1, 2):
 
 		for j in range(len(files)):
 			filename = directory + files[j]
-			img = Image.open(open(filename))
+			image = Image.open(open(filename))
+			image = image.convert('L')
 
-			img = img.convert('L')
+			# sketchy stuff from http://stackoverflow.com/questions/9103257/resize-image-maintaining-aspect-ratio-and-making-portrait-and-landscape-images-e
+			dim = image.size
+
+			max_length = max(dim)
+
+			# 12 is sqrt(NUM_CELLS)
+			cell_side = int(math.sqrt(NUM_CELLS))
+			if (max(dim) % cell_side != 0):
+				max_length = max(dim) + cell_side - (max(dim) % cell_side)
+
+			size = (max_length, max_length)
+
+			image.thumbnail(size, Image.ANTIALIAS)
+			image_size = image.size
+
+			thumb = image.crop( (0, 0, size[0], size[1]) )
+
+			offset_x = max( (size[0] - image_size[0]) / 2, 0 )
+			offset_y = max( (size[1] - image_size[1]) / 2, 0 )
+
+			img = ImageChops.offset(thumb, offset_x, offset_y)
+
 			img = numpy.asarray(img, dtype='float64')
 
-			feature_vector = hog(img, orientations=8, pixels_per_cell=(16, 16),
+			ppc = int(max_length / math.sqrt(NUM_CELLS))
+
+			feature_vector = hog(img, orientations=8, pixels_per_cell=(ppc, ppc),
                     cells_per_block=(1, 1), visualise=False)
 
+			#print len(feature_vector)
 			if j >= 0 and j < endpoints[0]:
 				training_data.append(feature_vector)
 				training_labels.append(i)
