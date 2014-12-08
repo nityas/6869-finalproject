@@ -347,7 +347,7 @@ def train_cnn(n_epochs=200):
                           ' ran for %.2fm' % ((end_time - start_time) / 60.))
 
 if __name__ == '__main__':
-    evaluate_lenet()
+    evaluate_lenet(dataset='res/EnglishImg.tgz')
 
 
 def experiment(state, channel):
