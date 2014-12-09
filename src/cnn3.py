@@ -65,24 +65,12 @@ def run_cnn():
     net.input_layer(1, 75, 75)
     net.convolutional_layer(20, 5, 5, Activation.RECTIFIER, 0.05)
     net.maxpooling_layer(2, 2)
-    # net.convolutional_layer(40, 5, 5, Activation.RECTIFIER, 0.05)
-    # net.maxpooling_layer(2, 2)
-    # net.fully_connected_layer(100, Activation.LOGISTIC)
+    net.convolutional_layer(40, 5, 5, Activation.RECTIFIER, 0.05)
+    net.maxpooling_layer(2, 2)
+    net.fully_connected_layer(100, Activation.LOGISTIC)
 
     net.output_layer(F, Activation.SOFTMAX)
     net.set_error_function(Error.CE)
-
-    # Split dataset into training set and validation set and make sure that
-    # each class is equally distributed in the datasets
-
-    # X1 = train_features.reshape((train_features.shape[0], train_features.shape[1] * train_features.shape[2]))
-    # T1 = numpy.vstack((T[0:(N/2)]))
-    # X2 = test_features.reshape((test_features.shape[0], test_features.shape[1] * test_features.shape[2]))
-    # T2 = numpy.vstack((T[(N/2):]))
-
-    # training_set = DataSet(train_features, T1)
-    # validation_set = DataSet(test_features, T2)
-
 
     X1 = numpy.vstack((X[0:(N/2)]))
     print X1.shape
@@ -107,11 +95,11 @@ def run_cnn():
     print("The data has been split up input training and validation set.")
     training_percent = float(num_right_training) / len(X1)
     testing_percent = float(num_right_testing) / len(X2)
-    print("Correct predictions on training set: %d/%d, and percent is: %f, and accuracy is %f"
+    print("Correct predictions on training set: %d/%d, and percent is: %f")
           % (num_right_training, len(X1), training_percent))
     #print("Confusion matrix:")
     #print(confusion_matrix(net, training_set))
-    print("Correct predictions on test set: %d/%d, and percent is: %f, and accuracy is %f"
+    print("Correct predictions on test set: %d/%d, and percent is: %f")
           % (num_right_testing, len(X2), testing_percent))
     #print("Confusion matrix:")
     #print(confusion_matrix(net, validation_set))
