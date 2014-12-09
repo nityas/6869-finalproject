@@ -21,6 +21,7 @@ References:
    http://yann.lecun.com/exdb/publis/pdf/lecun-98.pdf
 
 """
+
 import os
 import sys
 import time
@@ -38,6 +39,10 @@ import lenet
 from lenet.LogisticRegression import *
 from lenet.HiddenLayer import *
 
+HOG_TRAINING_DATA = 'data/hog_training_data.npy'
+HOG_TRAINING_LABELS = 'data/hog_training_labels.npy'
+HOG_TESTING_DATA = 'data/hog_testing_data.npy'
+HOG_TESTING_LABELS = 'data/hog_testing_labels.npy'
 
 class LeNetConvPoolLayer(object):
     """Pool Layer of a convolutional network """
@@ -116,7 +121,7 @@ class LeNetConvPoolLayer(object):
 #TODO: make different version of this with desired combination
 def evaluate_lenet(learning_rate=0.1, n_epochs=200,
                     dataset='res/mnist.pkl',
-                    nkerns=[20, 50], batch_size=500):
+                    nkerns=[20, 50], batch_size=1):
     """ Demonstrates lenet on MNIST dataset
 
     :type learning_rate: float
@@ -135,18 +140,22 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
 
     rng = numpy.random.RandomState(23455)
 
-    datasets = load_data(dataset)
-
-    train_set_x, train_set_y = datasets[0]
-    valid_set_x, valid_set_y = datasets[1]
-    test_set_x, test_set_y = datasets[2]
+    if dataset == 'English':
+        train_set_y = numpy.load(HOG_TRAINING_LABELS)
+        train_set_x = numpy.load(HOG_TRAINING_DATA)
+        test_set_y = numpy.load(HOG_TESTING_LABELS)
+        test_set_x = numpy.load(HOG_TESTING_DATA)  
+        
+    else:
+        datasets = load_data(dataset)
+        train_set_x, train_set_y = datasets[0]
+        valid_set_x, valid_set_y = datasets[1]
+        test_set_x, test_set_y = datasets[2]
 
     # compute number of minibatches for training, validation and testing
-    n_train_batches = train_set_x.get_value(borrow=True).shape[0]
-    n_valid_batches = valid_set_x.get_value(borrow=True).shape[0]
-    n_test_batches = test_set_x.get_value(borrow=True).shape[0]
+    n_train_batches = train_set_x.shape[0]
+    n_test_batches = test_set_x.shape[0]
     n_train_batches /= batch_size
-    n_valid_batches /= batch_size
     n_test_batches /= batch_size
 
     # allocate symbolic variables for the data
@@ -277,7 +286,7 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
                            # found
     improvement_threshold = 0.995  # a relative improvement of this much is
                                    # considered significant
-    validation_frequency = min(n_train_batches, patience / 2)
+    # validation_frequency = min(n_train_batches, patience / 2)
                                   # go through this many
                                   # minibatche before checking the network
                                   # on the validation set; in this case we
@@ -295,6 +304,7 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
     while (epoch < n_epochs) and (not done_looping):
         epoch = epoch + 1
         print "epoch ", epoch
+        old_impr = test_score
         for minibatch_index in xrange(n_train_batches):
 
             iter = (epoch - 1) * n_train_batches + minibatch_index
@@ -307,35 +317,14 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
             actual = test_score[-1][1]
 
             n = len(numpy.unique(actual))
+            test_score = float(numpy.mean(test_losses))
+            print 'iter ', iter,': accuracy= ', test_score[0]
+            print "Confusion Matrix:"
             print numpy.array([zip(actual,pred).count(x) for x in itertools.product(list(set(actual)),repeat=2)]).reshape(n,n)
-            #test_score = float(numpy.mean(test_losses))
-            #print 'iter ', iter,': accuracy= ', test_score[0]
-
-            if (iter + 1) % validation_frequency == 0:
-
-                # compute zero-one loss on validation set
-                print 'computing zero-one validation'
-
-                validation_losses = [validate_model(i) for i
-                                     in xrange(n_valid_batches)]
-                this_validation_loss = numpy.mean(validation_losses)
-                print 'validation loss= ', this_validation_loss
-
-                # if we got the best validation score until now
-                if this_validation_loss < best_validation_loss:
-
-                    #improve patience if loss improvement is good enough
-                    if this_validation_loss < best_validation_loss *  \
-                       improvement_threshold:
-                        patience = max(patience, iter * patience_increase)
-
-                    # save best validation score and iteration number
-                    best_validation_loss = this_validation_loss
-                    best_iter = iter
-
-            if (patience <= iter) or (iter >= maxiter):
-                done_looping = True
-                break
+        
+        if test_score-old_impr < 0.01:
+            done_looping = True
+            break
 
     end_time = time.clock()
     print('Optimization complete.')
@@ -347,8 +336,7 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
                           ' ran for %.2fm' % ((end_time - start_time) / 60.))
 
 if __name__ == '__main__':
-    evaluate_lenet()
-
+    evaluate_lenet(dataset='English')
 
 def experiment(state, channel):
     evaluate_lenet(state.learning_rate, dataset=state.dataset)
