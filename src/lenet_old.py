@@ -153,8 +153,6 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
         valid_set_x, valid_set_y = datasets[1]
         test_set_x, test_set_y = datasets[2]
 
-    print "trainset, trianlabels", train_set_x, train_set_y
-
     # compute number of minibatches for training, validation and testing
     n_train_batches = len(train_set_x)
     n_test_batches = len(test_set_x)
@@ -229,8 +227,8 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
         [index],
         layer3.errors(y),
         givens={
-            x: test_set_x[index * batch_size: (index + 1) * batch_size],
-            y: test_set_y[index * batch_size: (index + 1) * batch_size]
+            x: test_set_x[index],
+            y: test_set_y[index]
         }
     )
 
@@ -243,14 +241,14 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
         }
     )
 
-    validate_model = theano.function(
-        [index],
-        layer3.errors(y),
-        givens={
-            x: valid_set_x[index * batch_size: (index + 1) * batch_size],
-            y: valid_set_y[index * batch_size: (index + 1) * batch_size]
-        }
-    )
+    # validate_model = theano.function(
+    #     [index],
+    #     layer3.errors(y),
+    #     givens={
+    #         x: valid_set_x[index * batch_size: (index + 1) * batch_size],
+    #         y: valid_set_y[index * batch_size: (index + 1) * batch_size]
+    #     }
+    # )
 
     # create a list of all model parameters to be fit by gradient descent
     params = layer3.params + layer2.params + layer1.params + layer0.params
@@ -339,7 +337,7 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
                           ' ran for %.2fm' % ((end_time - start_time) / 60.))
 
 if __name__ == '__main__':
-    evaluate_lenet(dataset='English')
+    evaluate_lenet(dataset='../English/Img/GoodImg/*')
 
 def experiment(state, channel):
     evaluate_lenet(state.learning_rate, dataset=state.dataset)
