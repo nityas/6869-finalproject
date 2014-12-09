@@ -12,10 +12,10 @@ except:
 
 #NOTE: LABELS ARE 0-INDEXED, UNLIKE WITH LOGISTIC REGRESSION
 
-IMG2D_TRAINING_DATA = 'data/img_training_data.npy'
-IMG2D_TRAINING_LABELS = 'data/img_training_labels.npy'
-IMG2D_TESTING_DATA = 'data/img_testing_data.npy'
-IMG2D_TESTING_LABELS = 'data/img_testing_labels.npy'
+IMG2D_TRAINING_DATA = 'data2/img_training_data.npy'
+IMG2D_TRAINING_LABELS = 'data2/img_training_labels.npy'
+IMG2D_TESTING_DATA = 'data2/img_testing_data.npy'
+IMG2D_TESTING_LABELS = 'data2/img_testing_labels.npy'
 
 HOG = False
 
@@ -67,7 +67,7 @@ def run_cnn():
     # net.maxpooling_layer(2, 2)
     # net.convolutional_layer(40, 5, 5, Activation.RECTIFIER, 0.05)
     # net.maxpooling_layer(2, 2)
-    # net.fully_connected_layer(100, Activation.LOGISTIC)
+    net.fully_connected_layer(100, Activation.LOGISTIC)
 
     net.output_layer(F, Activation.SOFTMAX)
     net.set_error_function(Error.CE)
@@ -82,7 +82,7 @@ def run_cnn():
     validation_set = DataSet(X2, T2)
 
     # Train for 30 episodes (with tuned parameters for MBSGD)
-    optimizer = MBSGD({"maximal_iterations": 15}, learning_rate=0.05,
+    optimizer = MBSGD({"maximal_iterations": 10}, learning_rate=0.05,
         learning_rate_decay=0.999, min_learning_rate=0.001, momentum=0.5,
         batch_size=128)
     Log.set_info() # Deactivate debug output
