@@ -38,6 +38,7 @@ from theano.tensor.nnet import conv
 import lenet
 from lenet.LogisticRegression import *
 from lenet.HiddenLayer import *
+from logreg import *
 
 HOG_TRAINING_DATA = 'data/hog_training_data.npy'
 HOG_TRAINING_LABELS = 'data/hog_training_labels.npy'
@@ -141,10 +142,8 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
     rng = numpy.random.RandomState(23455)
 
     if dataset == 'English':
-        train_set_y = numpy.load(HOG_TRAINING_LABELS)
-        train_set_x = numpy.load(HOG_TRAINING_DATA)
-        test_set_y = numpy.load(HOG_TESTING_LABELS)
-        test_set_x = numpy.load(HOG_TESTING_DATA)  
+        train_set_y, train_set_x = get_training_set()
+        test_set_y, test_set_x = get_test_set()
         
     else:
         datasets = load_data(dataset)
