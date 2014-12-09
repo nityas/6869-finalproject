@@ -40,7 +40,7 @@ USE_BAD = False
 HOG = False
 
 #use this flag if we want to test on 1D feature vectors
-ONE_D = False
+ONE_D = True
 
 training_data = []
 training_labels = []
