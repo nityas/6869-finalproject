@@ -8,8 +8,8 @@ HOG_TESTING_LABELS = 'data/hog_testing_labels.npy'
 
 def get_training_set():
   
-  train_labels = open(TRAIN_LABEL_PATH)
-  train_features = open(TRAIN_FEATURES_PATH)
+  train_labels = open(HOG_TRAINING_LABELS)
+  train_features = open(HOG_TRAINING_DATA)
 
   labels = []
   features = []
@@ -25,8 +25,8 @@ def get_training_set():
 
 def get_testing_set():
 
-  test_labels = open(TEST_LABEL_PATH)
-  test_features = open(TEST_FEATURES_PATH)
+  test_labels = open(HOG_TESTING_LABELS)
+  test_features = open(HOG_TESTING_DATA)
 
   labels = []
   features = []
@@ -101,4 +101,4 @@ def inverse(i):
   if i >= 37:
     return i - 26
 
-test()
+# test()

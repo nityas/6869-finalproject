@@ -38,7 +38,9 @@ from theano.tensor.nnet import conv
 import lenet
 from lenet.LogisticRegression import *
 from lenet.HiddenLayer import *
-from logreg import *
+from logreg import get_training_set
+from logreg import get_testing_set
+
 
 HOG_TRAINING_DATA = 'data/hog_training_data.npy'
 HOG_TRAINING_LABELS = 'data/hog_training_labels.npy'
