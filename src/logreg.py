@@ -18,6 +18,41 @@ TESTING_LABELS = ''
 
 #Set this flag if we want to train on HOG features
 HOG = False
+
+def get_training_set():
+  
+  train_labels = open(HOG_TRAINING_LABELS)
+  train_features = open(HOG_TRAINING_DATA)
+
+  labels = []
+  features = []
+
+  for line in train_features.readlines():
+    feature_vector = line.strip().split(',')
+    feature = map(float, feature_vector)
+    features.append(feature)
+  for line in train_labels.readlines():
+    label = map(int, line.strip().split(','))
+    labels.append(label[0])
+  return labels, features
+
+def get_testing_set():
+
+  test_labels = open(HOG_TESTING_LABELS)
+  test_features = open(HOG_TESTING_DATA)
+
+  labels = []
+  features = []
+
+  for line in test_features.readlines():
+    feature_vector = line.strip().split(',')
+    feature = map(float, feature_vector)
+    features.append(feature)
+  for line in test_labels.readlines():
+    label = map(int, line.strip().split(','))
+    labels.append(label[0])
+  return labels, features
+
 def train():
   print "beginning training"
   #labels, features = get_training_set()
@@ -91,4 +126,4 @@ def inverse(i):
   if i >= 37:
     return i - 26
 
-test()
+# test()
