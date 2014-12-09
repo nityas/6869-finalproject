@@ -64,10 +64,10 @@ def run_cnn():
     net.set_regularization(0.01, 0.01, 0)
     net.input_layer(1, 75, 75)
     net.convolutional_layer(20, 5, 5, Activation.RECTIFIER, 0.05)
-    net.maxpooling_layer(2, 2)
-    net.convolutional_layer(40, 5, 5, Activation.RECTIFIER, 0.05)
-    net.maxpooling_layer(2, 2)
-    net.fully_connected_layer(100, Activation.LOGISTIC)
+    # net.maxpooling_layer(2, 2)
+    # net.convolutional_layer(40, 5, 5, Activation.RECTIFIER, 0.05)
+    # net.maxpooling_layer(2, 2)
+    # net.fully_connected_layer(100, Activation.LOGISTIC)
 
     net.output_layer(F, Activation.SOFTMAX)
     net.set_error_function(Error.CE)
@@ -82,7 +82,7 @@ def run_cnn():
     validation_set = DataSet(X2, T2)
 
     # Train for 30 episodes (with tuned parameters for MBSGD)
-    optimizer = MBSGD({"maximal_iterations": 2}, learning_rate=0.05,
+    optimizer = MBSGD({"maximal_iterations": 15}, learning_rate=0.05,
         learning_rate_decay=0.999, min_learning_rate=0.001, momentum=0.5,
         batch_size=128)
     Log.set_info() # Deactivate debug output
