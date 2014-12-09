@@ -95,11 +95,11 @@ def run_cnn():
     print("The data has been split up input training and validation set.")
     training_percent = float(num_right_training) / len(X1)
     testing_percent = float(num_right_testing) / len(X2)
-    print("Correct predictions on training set: %d/%d, and percent is: %f")
+    print("Correct predictions on training set: %d/%d, and percent is: %f"
           % (num_right_training, len(X1), training_percent))
     #print("Confusion matrix:")
     #print(confusion_matrix(net, training_set))
-    print("Correct predictions on test set: %d/%d, and percent is: %f")
+    print("Correct predictions on test set: %d/%d, and percent is: %f"
           % (num_right_testing, len(X2), testing_percent))
     #print("Confusion matrix:")
     #print(confusion_matrix(net, validation_set))
