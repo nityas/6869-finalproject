@@ -119,7 +119,8 @@ class LogisticRegression(object):
                 ('y', y.type, 'y_pred', self.y_pred.type)
             )
         # check if y is of the correct datatype
-        if y.dtype.startswith('int'):
+        print "ydtype", y.dtype
+        if 'int' in str(y.dtype):
             if frac:
                 return (self.y_pred, y)
             # the T.neq operator returns a vector of 0s and 1s, where 1

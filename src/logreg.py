@@ -16,6 +16,11 @@ TRAINING_LABELS = ''
 TESTING_DATA = ''
 TESTING_LABELS = ''
 
+IMG2D_TRAINING_DATA = 'data/img2d_training_data.npy'
+IMG2D_TRAINING_LABELS = 'data/img2d_training_labels.npy'
+IMG2D_TESTING_DATA = 'data/img2d_testing_data.npy'
+IMG2D_TESTING_LABELS = 'data/img2d_testing_labels.npy'
+
 #Set this flag if we want to train on HOG features
 HOG = False
 
@@ -109,6 +114,40 @@ def test():
     else:
       num_wrong = num_wrong + 1
   print (float(num_correct) / (num_correct + num_wrong))
+
+def cnn_training_set():
+  
+  train_labels = open(IMG2D_TRAINING_LABELS)
+  train_features = open(IMG2D_TRAINING_DATA)
+
+  labels = []
+  features = []
+
+  for line in train_features.readlines():
+    feature_vector = line.strip().split(',')
+    feature = map(float, feature_vector)
+    features.append(feature)
+  for line in train_labels.readlines():
+    label = map(int, line.strip().split(','))
+    labels.append(label[0])
+  return labels, features
+
+def cnn_testing_set():
+
+  test_labels = open(IMG2D_TESTING_LABELS)
+  test_features = open(IMG2D_TESTING_DATA)
+
+  labels = []
+  features = []
+
+  for line in test_features.readlines():
+    feature_vector = line.strip().split(',')
+    feature = map(float, feature_vector)
+    features.append(feature)
+  for line in test_labels.readlines():
+    label = map(int, line.strip().split(','))
+    labels.append(label[0])
+  return labels, features
 
 def convert(i):
   if i >= 1 and i <= 10:
