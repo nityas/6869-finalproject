@@ -145,7 +145,7 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
 
     if dataset == 'English':
         train_set_y, train_set_x = get_training_set()
-        test_set_y, test_set_x = get_test_set()
+        test_set_y, test_set_x = get_testing_set()
         
     else:
         datasets = load_data(dataset)
@@ -153,9 +153,11 @@ def evaluate_lenet(learning_rate=0.1, n_epochs=200,
         valid_set_x, valid_set_y = datasets[1]
         test_set_x, test_set_y = datasets[2]
 
+    print "trainset, trianlabels", train_set_x, train_set_y
+
     # compute number of minibatches for training, validation and testing
-    n_train_batches = train_set_x.shape[0]
-    n_test_batches = test_set_x.shape[0]
+    n_train_batches = len(train_set_x)
+    n_test_batches = len(test_set_x)
     n_train_batches /= batch_size
     n_test_batches /= batch_size
 
