@@ -6,10 +6,23 @@ HOG_TRAINING_LABELS = 'data/hog_training_labels.npy'
 HOG_TESTING_DATA = 'data/hog_testing_data.npy'
 HOG_TESTING_LABELS = 'data/hog_testing_labels.npy'
 
+IMG_TRAINING_DATA = 'data/img_training_data.npy'
+IMG_TRAINING_LABELS = 'data/img_training_labels.npy'
+IMG_TESTING_DATA = 'data/img_testing_data.npy'
+IMG_TESTING_LABELS = 'data/img_testing_labels.npy'
+
+TRAINING_DATA = ''
+TRAINING_LABELS = ''
+TESTING_DATA = ''
+TESTING_LABELS = ''
+
+#Set this flag if we want to train on HOG features
+HOG = False
+
 def get_training_set():
   
-  train_labels = open(TRAIN_LABEL_PATH)
-  train_features = open(TRAIN_FEATURES_PATH)
+  train_labels = open(HOG_TRAINING_LABELS)
+  train_features = open(HOG_TRAINING_DATA)
 
   labels = []
   features = []
@@ -25,8 +38,8 @@ def get_training_set():
 
 def get_testing_set():
 
-  test_labels = open(TEST_LABEL_PATH)
-  test_features = open(TEST_FEATURES_PATH)
+  test_labels = open(HOG_TESTING_LABELS)
+  test_features = open(HOG_TESTING_DATA)
 
   labels = []
   features = []
@@ -40,12 +53,17 @@ def get_testing_set():
     labels.append(label[0])
   return labels, features
 
-
 def train():
   print "beginning training"
   #labels, features = get_training_set()
-  labels = numpy.load(HOG_TRAINING_LABELS)
-  features = numpy.load(HOG_TRAINING_DATA)
+  labels = []
+  features = []
+  if HOG:
+    labels = numpy.load(HOG_TRAINING_LABELS)
+    features = numpy.load(HOG_TRAINING_DATA)
+  else:
+    labels = numpy.load(IMG_TRAINING_LABELS)
+    features = numpy.load(IMG_TRAINING_DATA)    
   features.tolist()
 
   print labels
@@ -66,8 +84,15 @@ def test():
 
   model, scaler = train()
 
-  labels = numpy.load(HOG_TESTING_LABELS)
-  features = numpy.load(HOG_TESTING_DATA)
+  labels = []
+  features = []
+
+  if HOG:
+    labels = numpy.load(HOG_TESTING_LABELS)
+    features = numpy.load(HOG_TESTING_DATA)
+  else:
+    labels = numpy.load(IMG_TESTING_LABELS)
+    features = numpy.load(IMG_TESTING_DATA)    
 
   num_correct = 0
   num_wrong = 0
@@ -101,4 +126,4 @@ def inverse(i):
   if i >= 37:
     return i - 26
 
-test()
+# test()
