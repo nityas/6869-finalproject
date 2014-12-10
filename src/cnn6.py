@@ -12,10 +12,10 @@ except:
 
 #NOTE: LABELS ARE 0-INDEXED, UNLIKE WITH LOGISTIC REGRESSION
 
-IMG2D_TRAINING_DATA = 'data/img_training_data.npy'
-IMG2D_TRAINING_LABELS = 'data/img_training_labels.npy'
-IMG2D_TESTING_DATA = 'data/img_testing_data.npy'
-IMG2D_TESTING_LABELS = 'data/img_testing_labels.npy'
+IMG2D_TRAINING_DATA = 'data2/img_training_data.npy'
+IMG2D_TRAINING_LABELS = 'data2/img_training_labels.npy'
+IMG2D_TESTING_DATA = 'data2/img_testing_data.npy'
+IMG2D_TESTING_LABELS = 'data2/img_testing_labels.npy'
 
 HOG = False
 
@@ -61,28 +61,21 @@ def run_cnn():
 
     # Setup network
     net = Net()
-    net.set_regularization(0.01, 0.01, 0)
+    net.set_regularization(0, 0.01, 0)
     net.input_layer(1, 75, 75)
-    net.convolutional_layer(20, 5, 5, Activation.RECTIFIER, 0.05)
+    # net.dropout_layer(0.2)
+    # net.convolutional_layer(30, 5, 5, Activation.RECTIFIER, 0.05)
+    net.dropout_layer(0.2)
     net.maxpooling_layer(2, 2)
-    # net.convolutional_layer(40, 5, 5, Activation.RECTIFIER, 0.05)
+    net.convolutional_layer(40, 10, 10, Activation.RECTIFIER, 0.05)
+    # net.dropout_layer(0.2)
     # net.maxpooling_layer(2, 2)
-    # net.fully_connected_layer(100, Activation.LOGISTIC)
-
+    # net.fully_connected_layer(200, Activation.RECTIFIER, 0.05)
+    # net.dropout_layer(0.4)
+    # net.fully_connected_layer(150, Activation.RECTIFIER, 0.05)
+    #net.dropout_layer(0.4);
     net.output_layer(F, Activation.SOFTMAX)
     net.set_error_function(Error.CE)
-
-    # Split dataset into training set and validation set and make sure that
-    # each class is equally distributed in the datasets
-
-    # X1 = train_features.reshape((train_features.shape[0], train_features.shape[1] * train_features.shape[2]))
-    # T1 = numpy.vstack((T[0:(N/2)]))
-    # X2 = test_features.reshape((test_features.shape[0], test_features.shape[1] * test_features.shape[2]))
-    # T2 = numpy.vstack((T[(N/2):]))
-
-    # training_set = DataSet(train_features, T1)
-    # validation_set = DataSet(test_features, T2)
-
 
     X1 = numpy.vstack((X[0:(N/2)]))
     print X1.shape
@@ -94,7 +87,7 @@ def run_cnn():
     validation_set = DataSet(X2, T2)
 
     # Train for 30 episodes (with tuned parameters for MBSGD)
-    optimizer = MBSGD({"maximal_iterations": 2}, learning_rate=0.05,
+    optimizer = MBSGD({"maximal_iterations": 10}, learning_rate=0.05,
         learning_rate_decay=0.999, min_learning_rate=0.001, momentum=0.5,
         batch_size=128)
     Log.set_info() # Deactivate debug output
@@ -107,11 +100,11 @@ def run_cnn():
     print("The data has been split up input training and validation set.")
     training_percent = float(num_right_training) / len(X1)
     testing_percent = float(num_right_testing) / len(X2)
-    print("Correct predictions on training set: %d/%d, and percent is: %f, and accuracy is %f"
+    print("Correct predictions on training set: %d/%d, and percent is: %f"
           % (num_right_training, len(X1), training_percent))
     #print("Confusion matrix:")
     #print(confusion_matrix(net, training_set))
-    print("Correct predictions on test set: %d/%d, and percent is: %f, and accuracy is %f"
+    print("Correct predictions on test set: %d/%d, and percent is: %f"
           % (num_right_testing, len(X2), testing_percent))
     #print("Confusion matrix:")
     #print(confusion_matrix(net, validation_set))

@@ -87,7 +87,7 @@ def run_cnn():
     validation_set = DataSet(X2, T2)
 
     # Train for 30 episodes (with tuned parameters for MBSGD)
-    optimizer = MBSGD({"maximal_iterations": 10}, learning_rate=0.05,
+    optimizer = MBSGD({"maximal_iterations": 15}, learning_rate=0.05,
         learning_rate_decay=0.999, min_learning_rate=0.001, momentum=0.5,
         batch_size=128)
     Log.set_info() # Deactivate debug output

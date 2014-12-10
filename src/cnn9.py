@@ -72,7 +72,7 @@ def run_cnn():
     # net.maxpooling_layer(2, 2)
     # net.fully_connected_layer(200, Activation.RECTIFIER, 0.05)
     # net.dropout_layer(0.4)
-    # net.fully_connected_layer(150, Activation.RECTIFIER, 0.05)
+    net.fully_connected_layer(150, Activation.RECTIFIER, 0.05)
     net.dropout_layer(0.4);
     net.output_layer(F, Activation.SOFTMAX)
     net.set_error_function(Error.CE)
