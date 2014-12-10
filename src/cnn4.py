@@ -60,20 +60,33 @@ def run_cnn():
 
 
     # Setup network
+    # net = Net()
+    # net.set_regularization(0.01, 0.01, 0)
+    # net.input_layer(1, 75, 75)
+    # net.convolutional_layer(20, 5, 5, Activation.RECTIFIER, 0.05)
+    # net.convolutional_layer(20, 5, 5, Activation.RECTIFIER, 0.05)
+    # net.maxpooling_layer(2, 2)
+    # net.fully_connected_layer(100, Activation.LOGISTIC)
+
     net = Net()
-    net.set_regularization(0.01, 0.01, 0)
+    net.set_regularization(0, 0.001, 0)
     net.input_layer(1, 75, 75)
-    net.convolutional_layer(20, 5, 5, Activation.RECTIFIER, 0.05)
-    net.convolutional_layer(20, 5, 5, Activation.RECTIFIER, 0.05)
+
+    net.dropout_layer(0.2)
     net.maxpooling_layer(2, 2)
-    net.fully_connected_layer(100, Activation.LOGISTIC)
+    net.maxpooling_layer(2, 2)
+    net.convolutional_layer(30, 5, 5, Activation.RECTIFIER, 0.05)
+
+    net.dropout_layer(0.4);
+    net.output_layer(F, Activation.SOFTMAX)
+    net.set_error_function(Error.CE)
 
     # net.convolutional_layer(40, 5, 5, Activation.RECTIFIER, 0.05)
     # net.maxpooling_layer(2, 2)
     # net.fully_connected_layer(100, Activation.LOGISTIC)
 
-    net.output_layer(F, Activation.SOFTMAX)
-    net.set_error_function(Error.CE)
+    # net.output_layer(F, Activation.SOFTMAX)
+    # net.set_error_function(Error.CE)
 
     # Split dataset into training set and validation set and make sure that
     # each class is equally distributed in the datasets
