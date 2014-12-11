@@ -60,6 +60,7 @@ def run_cnn():
 
 
     # Setup network
+    #currently at 53%
     net = Net()
     net.set_regularization(0, 7, 0)
     net.input_layer(1, 75, 75)
