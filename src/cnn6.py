@@ -62,14 +62,14 @@ def run_cnn():
     # Setup network
     #currently at 53%
     net = Net()
-    net.set_regularization(0, 7, 0)
+    net.set_regularization(0, 8, 0)
     net.input_layer(1, 75, 75)
     net.dropout_layer(0.2)
-    net.convolutional_layer(60, 10, 10, Activation.RECTIFIER, 0.05)
+    net.convolutional_layer(65, 10, 10, Activation.RECTIFIER, 0.05)
     net.maxpooling_layer(2, 2)
     net.dropout_layer(0.2)
     net.maxpooling_layer(2, 2)
-    net.convolutional_layer(50, 10, 10, Activation.RECTIFIER, 0.05)
+    net.convolutional_layer(55, 10, 10, Activation.RECTIFIER, 0.05)
     print "done setting up network"
     # net.dropout_layer(0.2)
     # net.maxpooling_layer(2, 2)
@@ -90,10 +90,13 @@ def run_cnn():
     validation_set = DataSet(X2, T2)
 
     # Train for 30 episodes (with tuned parameters for MBSGD)
+    print "creating optimizer"
     optimizer = MBSGD({"maximal_iterations": 10}, learning_rate=0.05,
         learning_rate_decay=0.999, min_learning_rate=0.001, momentum=0.5,
         batch_size=128)
     #Log.set_info() # Deactivate debug output
+
+    print "beginning training"
     optimizer.optimize(net, training_set)
 
     print "done training"
