@@ -159,46 +159,46 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=250,
     ######################
     print '... building the model'
 
-    # Reshape matrix of rasterized images of shape (batch_size, 28 * 28)
+    # Reshape matrix of rasterized images of shape (batch_size, 40 * 40)
     # to a 4D tensor, compatible with our LeNetConvPoolLayer
-    # (28, 28) is the size of MNIST images.
-    layer0_input = x.reshape((batch_size, 1, 28, 28))
+    # (40, 40) is the size of MNIST images.
+    layer0_input = x.reshape((batch_size, 1, 40, 40))
 
     # Construct the first convolutional pooling layer:
-    # filtering reduces the image size to (28-5+1 , 28-5+1) = (24, 24)
-    # maxpooling reduces this further to (24/2, 24/2) = (12, 12)
-    # 4D output tensor is thus of shape (batch_size, nkerns[0], 12, 12)
+    # filtering reduces the image size to (40-7+1 , 40-7+1) = (34, 34)
+    # maxpooling reduces this further to (34/2, 34/2) = (17, 17)
+    # 4D output tensor is thus of shape (batch_size, nkerns[0], 17, 17)
     layer0 = LeNetConvPoolLayer(
         rng,
         input=layer0_input,
-        image_shape=(batch_size, 1, 28, 28),
-        filter_shape=(nkerns[0], 1, 5, 5),
+        image_shape=(batch_size, 1, 40, 40),
+        filter_shape=(nkerns[0], 1, 7, 7),
         poolsize=(2, 2)
     )
 
     # Construct the second convolutional pooling layer
-    # filtering reduces the image size to (12-5+1, 12-5+1) = (8, 8)
-    # maxpooling reduces this further to (8/2, 8/2) = (4, 4)
-    # 4D output tensor is thus of shape (nkerns[0], nkerns[1], 4, 4)
+    # filtering reduces the image size to (17-7+1, 17-7+1) = (11, 11)
+    # maxpooling reduces this further to (11/2, 11/2) = (5, 5)
+    # 4D output tensor is thus of shape (nkerns[0], nkerns[1], 5, 5)
     layer1 = LeNetConvPoolLayer(
         rng,
         input=layer0.output,
-        image_shape=(batch_size, nkerns[0], 12, 12),
-        filter_shape=(nkerns[1], nkerns[0], 5, 5),
+        image_shape=(batch_size, nkerns[0], 17, 17),
+        filter_shape=(nkerns[1], nkerns[0], 7, 7),
         poolsize=(2, 2)
     )
 
     # the HiddenLayer being fully-connected, it operates on 2D matrices of
     # shape (batch_size, num_pixels) (i.e matrix of rasterized images).
-    # This will generate a matrix of shape (batch_size, nkerns[1] * 4 * 4),
-    # or (500, 50 * 4 * 4) = (500, 800) with the default values.
+    # This will generate a matrix of shape (batch_size, nkerns[1] * 5 * 5),
+    # or (500, 50 * 5 * 5) = (500, 1250) with the default values.
     layer2_input = layer1.output.flatten(2)
 
     # construct a fully-connected sigmoidal layer
     layer2 = HiddenLayer(
         rng,
         input=layer2_input,
-        n_in=nkerns[1] * 4 * 4,
+        n_in=nkerns[1] * 5 * 5,
         n_out=500,
         activation=T.tanh
     )

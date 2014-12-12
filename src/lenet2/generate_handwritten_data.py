@@ -1,27 +1,47 @@
 import gzip
 import cPickle
 from os import listdir
-from PIL import Image
+from PIL import Image, ImageChops
 import numpy as np
+import math
 
-output = 'EnglishHandwritten.gz'
+output = 'EnglishNatural.gz'
+
+FINAL_IMAGE_SIZE = 40
 
 images = []
 values = []
-for group in listdir('data'):
+for group in listdir('data2/Bmp'):
     if '~' in group:
         continue
     print 'beginning group', group
-    for png in listdir('data/%s' % group):
-        img = Image.open('data/%s/%s' % (group, png))
-        img = img.convert('LA') # convert to grayscale
-        img.thumbnail((28, 21), Image.ANTIALIAS)
-        data = img.load()
-        nex = np.zeros((28, 28))
-        for i in range(28):
-            for j in range(28):
-                nex[i, j] = 1.0 - (data[i, j][0] / 255.0 if j < 21 else 1.0);
-        images.append(nex.reshape((784,)))
+    for png in listdir('data2/Bmp/%s' % group):
+        image = Image.open('data2/Bmp/%s/%s' % (group, png))
+        image = image.convert('L') # convert to grayscale
+
+        dim = image.size
+
+        max_length = max(dim)
+
+        size = (max_length, max_length)
+
+        image.thumbnail(size, Image.ANTIALIAS)
+        image_size = image.size
+        #print image_size
+
+        thumb = image.crop( (0, 0, size[0], size[1]) )
+
+        offset_x = max( (size[0] - image_size[0]) / 2, 0 )
+        offset_y = max( (size[1] - image_size[1]) / 2, 0 )
+
+        img = ImageChops.offset(thumb, offset_x, offset_y)
+        img = img.resize((FINAL_IMAGE_SIZE, FINAL_IMAGE_SIZE), Image.ANTIALIAS)
+
+        img = np.asarray(img, dtype='float64')
+
+        feature_vector = img.flatten()
+
+        images.append(feature_vector)
         values.append(int(group[len('Sample'):]) - 1)
 
     #break
