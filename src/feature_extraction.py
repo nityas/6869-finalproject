@@ -28,6 +28,11 @@ IMG2D_TRAINING_LABELS = 'data/img2d_training_labels'
 IMG2D_TESTING_DATA = 'data/img2d_testing_data'
 IMG2D_TESTING_LABELS = 'data/img2d_testing_labels'
 
+HND_TRAINING_DATA = 'data/hnd_training_data'
+HND_TRAINING_LABELS = 'data/hnd_training_labels'
+HND_TESTING_DATA = 'data/hnd_testing_data'
+HND_TESTING_LABELS = 'data/hnd_testing_labels'
+
 TRAINING_DATA = ''
 TRAINING_LABELS = ''
 TESTING_DATA = ''
@@ -37,10 +42,16 @@ TESTING_LABELS = ''
 USE_BAD = False
 
 # use this flag if we want to test on HOG feature vectors
-HOG = False
+HOG = True
 
 #use this flag if we want to test on 1D feature vectors
 ONE_D = False
+
+USE_HND = True
+if USE_HND:
+	root = '../English/Hnd/Img/'
+	bad = ''
+	good = ''
 
 training_data = []
 training_labels = []
@@ -107,7 +118,7 @@ for i in range (1, 63):
 			if HOG:
 				feature_vector = hog(img, orientations=8, pixels_per_cell=(ppc, ppc),
                     cells_per_block=(1, 1), visualise=False)
-				print feature_vector
+				print len(feature_vector)
 				TRAINING_DATA = HOG_TRAINING_DATA
 				TRAINING_LABELS = HOG_TRAINING_LABELS
 				TESTING_DATA = HOG_TESTING_DATA
@@ -122,10 +133,10 @@ for i in range (1, 63):
 			else:
 				feature_vector = img
 				print feature_vector.shape
-				TRAINING_DATA = IMG2D_TRAINING_DATA
-				TRAINING_LABELS = IMG2D_TRAINING_LABELS
-				TESTING_DATA = IMG2D_TESTING_DATA
-				TESTING_LABELS = IMG2D_TESTING_LABELS
+				TRAINING_DATA = HND_TRAINING_DATA
+				TRAINING_LABELS = HND_TRAINING_LABELS
+				TESTING_DATA = HND_TESTING_DATA
+				TESTING_LABELS = HND_TESTING_LABELS
 
 			if j >= 0 and j < endpoints[0]:
 				training_data.append(feature_vector)
