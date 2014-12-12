@@ -338,7 +338,7 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=500,
                           ' ran for %.2fm' % ((end_time - start_time) / 60.))
 
 if __name__ == '__main__':
-    evaluate_lenet5(dataset='EnglishHandwritten.gz')
+    evaluate_lenet5(dataset='EnglishNatural.gz')
 
 
 def experiment(state, channel):
