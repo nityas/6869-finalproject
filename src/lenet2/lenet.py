@@ -111,6 +111,14 @@ class LeNetConvPoolLayer(object):
         self.params = [self.W, self.b]
 
 
+def plot_validation_data(error_rates):
+    import matplotlib.pyplot as plt
+    plt.plot(range(len(error_rates)),error_rates)
+    plt.title('Accuracy over CNN Training Period')
+    plt.xlabel('iteration number')
+    plt.ylabel('test error rate')
+    plt.show()
+
 def evaluate_lenet5(learning_rate=0.1, n_epochs=250,
                     dataset='mnist.pkl.gz',
                     nkerns=[20, 50], batch_size=500, plot_results=False):
@@ -346,12 +354,4 @@ if __name__ == '__main__':
 
 def experiment(state, channel):
     evaluate_lenet5(state.learning_rate, dataset=state.dataset)
-
-def plot_validation_data(error_rates):
-    import matplotlib.pyplot as plt
-    plt.plot(range(len(error_rates)),error_rates)
-    plt.title('Accuracy over CNN Training Period')
-    plt.xlabel('iteration number')
-    plt.ylabel('test error rate')
-    plt.show()
 
