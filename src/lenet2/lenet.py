@@ -111,9 +111,9 @@ class LeNetConvPoolLayer(object):
         self.params = [self.W, self.b]
 
 
-def evaluate_lenet5(learning_rate=0.1, n_epochs=500,
+def evaluate_lenet5(learning_rate=0.1, n_epochs=250,
                     dataset='mnist.pkl.gz',
-                    nkerns=[20, 50], batch_size=500):
+                    nkerns=[20, 50], batch_size=500, plot_results=False):
     """ Demonstrates lenet on MNIST dataset
 
     :type learning_rate: float
@@ -278,7 +278,7 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=500,
 
     epoch = 0
     done_looping = False
-
+    error_rates = []
     while (epoch < n_epochs) and (not done_looping):
         epoch = epoch + 1
         print 'epoch is', epoch
@@ -300,6 +300,7 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=500,
                 print('epoch %i, minibatch %i/%i, validation error %f %%' %
                       (epoch, minibatch_index + 1, n_train_batches,
                        this_validation_loss * 100.))
+                error_rates.append(this_validation_loss * 100.)
 
                 # if we got the best validation score until now
                 if this_validation_loss < best_validation_loss:
@@ -336,10 +337,21 @@ def evaluate_lenet5(learning_rate=0.1, n_epochs=500,
     print >> sys.stderr, ('The code for file ' +
                           os.path.split(__file__)[1] +
                           ' ran for %.2fm' % ((end_time - start_time) / 60.))
+    if plot_results:
+        plot_validation_data(error_rates)
 
 if __name__ == '__main__':
-    evaluate_lenet5(dataset='EnglishNatural.gz')
+    evaluate_lenet5(dataset='EnglishNatural.gz',plot_results=True)
 
 
 def experiment(state, channel):
     evaluate_lenet5(state.learning_rate, dataset=state.dataset)
+
+def plot_validation_data(error_rates):
+    import matplotlib.pyplot as plt
+    plt.plot(range(len(error_rates)),error_rates)
+    plt.title('Accuracy over CNN Training Period')
+    plt.xlabel('iteration number')
+    plt.ylabel('test error rate')
+    plt.show()
+
