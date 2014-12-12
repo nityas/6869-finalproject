@@ -62,14 +62,14 @@ def run_cnn():
     # Setup network
     #currently at 53%
     net = Net()
-    net.set_regularization(0, 8, 0)
+    net.set_regularization(0, 7, 0)
     net.input_layer(1, 75, 75)
     net.dropout_layer(0.2)
-    net.convolutional_layer(65, 10, 10, Activation.RECTIFIER, 0.05)
+    net.convolutional_layer(66, 10, 10, Activation.RECTIFIER, 0.05)
     net.maxpooling_layer(2, 2)
     net.dropout_layer(0.2)
     net.maxpooling_layer(2, 2)
-    net.convolutional_layer(55, 10, 10, Activation.RECTIFIER, 0.05)
+    net.convolutional_layer(66, 10, 10, Activation.RECTIFIER, 0.05)
     print "done setting up network"
     # net.dropout_layer(0.2)
     # net.maxpooling_layer(2, 2)
