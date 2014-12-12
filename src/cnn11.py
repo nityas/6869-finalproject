@@ -91,7 +91,7 @@ def run_cnn():
     optimizer = MBSGD({"maximal_iterations": 10}, learning_rate=0.05,
         learning_rate_decay=0.999, min_learning_rate=0.001, momentum=0.1,
         batch_size=128)
-    Log.set_info() # Deactivate debug output
+    #Log.set_info() # Deactivate debug output
     optimizer.optimize(net, training_set)
  
     num_right_training = classification_hits(net, training_set)

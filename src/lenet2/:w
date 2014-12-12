@@ -1,0 +1,36 @@
+import gzip
+import cPickle
+from os import listdir
+from PIL import Image
+import numpy as np
+
+output = 'EnglishHandwritten.gz'
+
+images = []
+values = []
+for group in listdir('data'):
+    if '~' in group:
+        continue
+    print 'beginning group', group
+    for png in listdir('data/%s' % group):
+        img = Image.open('data/%s/%s' % (group, png))
+        img = img.convert('LA') # convert to grayscale
+        img.thumbnail((60, 45), Image.ANTIALIAS)
+        images.append(list([x[0] / 255.0 for x in img.getdata()]))
+        values.append(int(group[len('Sample'):]))
+
+images = np.array(images)
+values = np.array(values)
+
+print images.shape
+print values.shape
+
+# shuffle
+perm = np.random.permutation(len(images))
+ntraining = len(perm) / 2
+nvalid = len(perm) / 4
+training_idx = perm[:ntraining]
+valid_idx = perm[ntraining:nvalid+ntraining]
+test_idx = perm[ntraining+nvalid:]
+
+training = (images[training_idx, :], values[training_idx, :])
