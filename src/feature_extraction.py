@@ -13,25 +13,33 @@ root = '../English/Img/'
 bad = 'BadImag/Bmp/'
 good = 'GoodImg/Bmp/'
 
-HOG_TRAINING_DATA = 'data/hog_training_data'
-HOG_TRAINING_LABELS = 'data/hog_training_labels'
-HOG_TESTING_DATA = 'data/hog_testing_data'
-HOG_TESTING_LABELS = 'data/hog_testing_labels'
+USE_HND = True
+suffix = ''
+if USE_HND:
+	root = 'lenet2/data/'
+	bad = ''
+	good = ''
+	suffix = '_hnd'
 
-IMG_TRAINING_DATA = 'data/img_training_data'
-IMG_TRAINING_LABELS = 'data/img_training_labels'
-IMG_TESTING_DATA = 'data/img_testing_data'
-IMG_TESTING_LABELS = 'data/img_testing_labels'
+HOG_TRAINING_DATA = 'data/hog_training_data' + suffix
+HOG_TRAINING_LABELS = 'data/hog_training_labels' + suffix
+HOG_TESTING_DATA = 'data/hog_testing_data' + suffix
+HOG_TESTING_LABELS = 'data/hog_testing_labels' + suffix
 
-IMG2D_TRAINING_DATA = 'data/img2d_training_data'
-IMG2D_TRAINING_LABELS = 'data/img2d_training_labels'
-IMG2D_TESTING_DATA = 'data/img2d_testing_data'
-IMG2D_TESTING_LABELS = 'data/img2d_testing_labels'
+IMG_TRAINING_DATA = 'data/img_training_data' + suffix
+IMG_TRAINING_LABELS = 'data/img_training_labels' + suffix
+IMG_TESTING_DATA = 'data/img_testing_data' + suffix
+IMG_TESTING_LABELS = 'data/img_testing_labels' + suffix
 
-HND_TRAINING_DATA = 'data/hnd_training_data'
-HND_TRAINING_LABELS = 'data/hnd_training_labels'
-HND_TESTING_DATA = 'data/hnd_testing_data'
-HND_TESTING_LABELS = 'data/hnd_testing_labels'
+IMG2D_TRAINING_DATA = 'data/img2d_training_data' + suffix
+IMG2D_TRAINING_LABELS = 'data/img2d_training_labels' + suffix
+IMG2D_TESTING_DATA = 'data/img2d_testing_data' + suffix
+IMG2D_TESTING_LABELS = 'data/img2d_testing_labels' + suffix
+
+HND_TRAINING_DATA = 'data/hnd_training_data' + suffix
+HND_TRAINING_LABELS = 'data/hnd_training_labels' + suffix
+HND_TESTING_DATA = 'data/hnd_testing_data' + suffix
+HND_TESTING_LABELS = 'data/hnd_testing_labels' + suffix
 
 TRAINING_DATA = ''
 TRAINING_LABELS = ''
@@ -42,16 +50,10 @@ TESTING_LABELS = ''
 USE_BAD = False
 
 # use this flag if we want to test on HOG feature vectors
-HOG = True
+HOG = False
 
 #use this flag if we want to test on 1D feature vectors
 ONE_D = False
-
-USE_HND = True
-if USE_HND:
-	root = '../English/Hnd/Img/'
-	bad = ''
-	good = ''
 
 training_data = []
 training_labels = []
