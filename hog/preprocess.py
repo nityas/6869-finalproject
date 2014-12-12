@@ -1,4 +1,5 @@
 # based on http://cs229.stanford.edu/proj2013/JimenezNguyen_MathFormulas_final_paper.pdf
+# http://www.cs.cmu.edu/~guestrin/Class/10701/projects.html#image is the dataset
 
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages/') # not necessary for all computers, depending on how OpenCV was installed
@@ -8,12 +9,12 @@ import numpy as np
 from skimage import morphology
 from PIL import Image
 
-fname = 'math.png'
+fname = 'board1.jpg'
 img = cv2.imread(fname)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 10) # maybe increase the last argument
-kernel = np.ones((2, 2), np.uint8)
+thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 8) # maybe increase the last argument
+kernel = np.ones((4, 4), np.uint8)
 dilation = cv2.dilate(thresh, kernel, iterations=1)
 
 contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)

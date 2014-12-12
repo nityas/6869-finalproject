@@ -13,20 +13,33 @@ root = '../English/Img/'
 bad = 'BadImag/Bmp/'
 good = 'GoodImg/Bmp/'
 
-HOG_TRAINING_DATA = 'data/hog_training_data'
-HOG_TRAINING_LABELS = 'data/hog_training_labels'
-HOG_TESTING_DATA = 'data/hog_testing_data'
-HOG_TESTING_LABELS = 'data/hog_testing_labels'
+USE_HND = True
+suffix = ''
+if USE_HND:
+	root = 'lenet2/data/'
+	bad = ''
+	good = ''
+	suffix = '_hnd'
 
-IMG_TRAINING_DATA = 'data/img_training_data'
-IMG_TRAINING_LABELS = 'data/img_training_labels'
-IMG_TESTING_DATA = 'data/img_testing_data'
-IMG_TESTING_LABELS = 'data/img_testing_labels'
+HOG_TRAINING_DATA = 'data/hog_training_data' + suffix
+HOG_TRAINING_LABELS = 'data/hog_training_labels' + suffix
+HOG_TESTING_DATA = 'data/hog_testing_data' + suffix
+HOG_TESTING_LABELS = 'data/hog_testing_labels' + suffix
 
-IMG2D_TRAINING_DATA = 'data/img2d_training_data'
-IMG2D_TRAINING_LABELS = 'data/img2d_training_labels'
-IMG2D_TESTING_DATA = 'data/img2d_testing_data'
-IMG2D_TESTING_LABELS = 'data/img2d_testing_labels'
+IMG_TRAINING_DATA = 'data/img_training_data' + suffix
+IMG_TRAINING_LABELS = 'data/img_training_labels' + suffix
+IMG_TESTING_DATA = 'data/img_testing_data' + suffix
+IMG_TESTING_LABELS = 'data/img_testing_labels' + suffix
+
+IMG2D_TRAINING_DATA = 'data/img2d_training_data' + suffix
+IMG2D_TRAINING_LABELS = 'data/img2d_training_labels' + suffix
+IMG2D_TESTING_DATA = 'data/img2d_testing_data' + suffix
+IMG2D_TESTING_LABELS = 'data/img2d_testing_labels' + suffix
+
+HND_TRAINING_DATA = 'data/hnd_training_data' + suffix
+HND_TRAINING_LABELS = 'data/hnd_training_labels' + suffix
+HND_TESTING_DATA = 'data/hnd_testing_data' + suffix
+HND_TESTING_LABELS = 'data/hnd_testing_labels' + suffix
 
 TRAINING_DATA = ''
 TRAINING_LABELS = ''
@@ -107,7 +120,7 @@ for i in range (1, 63):
 			if HOG:
 				feature_vector = hog(img, orientations=8, pixels_per_cell=(ppc, ppc),
                     cells_per_block=(1, 1), visualise=False)
-				print feature_vector
+				print len(feature_vector)
 				TRAINING_DATA = HOG_TRAINING_DATA
 				TRAINING_LABELS = HOG_TRAINING_LABELS
 				TESTING_DATA = HOG_TESTING_DATA
@@ -122,10 +135,10 @@ for i in range (1, 63):
 			else:
 				feature_vector = img
 				print feature_vector.shape
-				TRAINING_DATA = IMG2D_TRAINING_DATA
-				TRAINING_LABELS = IMG2D_TRAINING_LABELS
-				TESTING_DATA = IMG2D_TESTING_DATA
-				TESTING_LABELS = IMG2D_TESTING_LABELS
+				TRAINING_DATA = HND_TRAINING_DATA
+				TRAINING_LABELS = HND_TRAINING_LABELS
+				TESTING_DATA = HND_TESTING_DATA
+				TESTING_LABELS = HND_TESTING_LABELS
 
 			if j >= 0 and j < endpoints[0]:
 				training_data.append(feature_vector)

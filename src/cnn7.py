@@ -60,19 +60,23 @@ def run_cnn():
 
 
     # Setup network
+    #currently at 53%
+    #testing regularization
     net = Net()
-    net.set_regularization(0, 0.01, 0)
+    net.set_regularization(0, 8, 0)
     net.input_layer(1, 75, 75)
-    # net.dropout_layer(0.2)
-    # net.convolutional_layer(30, 5, 5, Activation.RECTIFIER, 0.05)
+    net.dropout_layer(0.2)
+    net.convolutional_layer(60, 10, 10, Activation.RECTIFIER, 0.05)
+    net.maxpooling_layer(2, 2)
     net.dropout_layer(0.2)
     net.maxpooling_layer(2, 2)
-    net.convolutional_layer(40, 10, 10, Activation.RECTIFIER, 0.05)
+    net.convolutional_layer(50, 10, 10, Activation.RECTIFIER, 0.05)
+    print "done setting up network"
     # net.dropout_layer(0.2)
     # net.maxpooling_layer(2, 2)
     # net.fully_connected_layer(200, Activation.RECTIFIER, 0.05)
-    net.dropout_layer(0.4)
-    net.fully_connected_layer(150, Activation.RECTIFIER, 0.05)
+    # net.dropout_layer(0.4)
+    # net.fully_connected_layer(150, Activation.RECTIFIER, 0.05)
     #net.dropout_layer(0.4);
     net.output_layer(F, Activation.SOFTMAX)
     net.set_error_function(Error.CE)
@@ -90,9 +94,10 @@ def run_cnn():
     optimizer = MBSGD({"maximal_iterations": 10}, learning_rate=0.05,
         learning_rate_decay=0.999, min_learning_rate=0.001, momentum=0.5,
         batch_size=128)
-    Log.set_info() # Deactivate debug output
+    #Log.set_info() # Deactivate debug output
     optimizer.optimize(net, training_set)
 
+    print "done training"
     num_right_training = classification_hits(net, training_set)
     num_right_testing = classification_hits(net, validation_set)
 
