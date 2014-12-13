@@ -9,12 +9,12 @@ import numpy as np
 from skimage import morphology
 from PIL import Image
 
-fname = 'board1.jpg'
+fname = 'math.png'
 img = cv2.imread(fname)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 8) # maybe increase the last argument
-kernel = np.ones((4, 4), np.uint8)
+kernel = np.ones((1, 1), np.uint8)
 dilation = cv2.dilate(thresh, kernel, iterations=1)
 
 contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -30,7 +30,18 @@ num = 0
 for cnt in contours:
     x, y, w, h, = cv2.boundingRect(cnt)
     if w * h > sizes[len(sizes) * 3 / 4] / 2:
-        cv2.imwrite('data/' + fname.replace('.', '_%d.' % num), img_color[y:y+h, x:x+w, :])
+        temp = np.copy(img[y:y+h, x:x+w, :])
+        for i in range(h):
+            for j in range(w):
+                if cv2.pointPolygonTest(cnt, (x + j, y + i), False) < 0 or thresh[y + i][x + j] < 10:
+                    temp[i, j, 0] = 0
+                    temp[i, j, 1] = 0
+                    temp[i, j, 2] = 0
+                else:
+                    temp[i, j, 0] = 255
+                    temp[i, j, 1] = 255
+                    temp[i, j, 2] = 255
+        cv2.imwrite('data_2/' + fname.replace('.', '_%d.' % num), temp)
         num += 1
 
 for cnt in contours:
